@@ -5,14 +5,14 @@ from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
-SECRET_KEY = ""
-ALGORITHM= ""
+SECRET_KEY = "8TTzECHDig3XMcNMLdqco8gebhAPyq4cPws_YNxdNaE"
+ALGORITHM= "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 db = {
     "samuel": {
         "username": "samuel",
-        "fullname": "Samuel Raj Bhat",
+        "full_name": "Samuel Raj Bhat",
         "email": "samuelrajbhat5@gmail.com",
         "hashed_password": "$2b$12$KAo5UvLGtAQEQmOvDw2Vwu9qINNgKaWQAp9eUyXmJs6MSSoxNnju6",
         "disabled": False
@@ -112,7 +112,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     access_token = create_access_token(data= {"sub": user.username}, expires_delta= access_token_expires)
     return {"access_token": access_token, "token_type": "bearer"}
 
-@app.get("users/me", response_model=User)
+@app.get("/users/me", response_model=User)
 async def read_users_me(current_user: User = Depends(get_current_active_user)):
     return current_user
 
