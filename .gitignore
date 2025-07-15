@@ -1,4 +1,4 @@
 .venv
-__pycahce__/
+**/__pycahce__/
 *.pyc
 *.pyo
