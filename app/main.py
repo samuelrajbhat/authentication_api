@@ -5,6 +5,11 @@ from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 
+# from config import settings
+from db.database import engine
+from models.user_models import Base
+
+
 SECRET_KEY = "8TTzECHDig3XMcNMLdqco8gebhAPyq4cPws_YNxdNaE"
 ALGORITHM= "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
@@ -38,7 +43,7 @@ class UserInDB(User):
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated= "auto")
 oauth_2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-app = FastAPI()
+
 
 def verify_password(plain_passoword, hashed_password):
     return pwd_context.verify(plain_passoword, hashed_password)
@@ -100,6 +105,11 @@ async def get_current_active_user(current_user: UserInDB = Depends(get_current_u
         raise HTTPException(status_code= status.HTTP_400_BAD_REQUEST, detail="Inactive User" )
     
     return current_user
+
+app = FastAPI()
+
+Base.metadata.create_all(bind = engine)
+
 
 @app.post("/token", response_model=Token)
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
