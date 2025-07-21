@@ -8,12 +8,12 @@ class UserClass(BaseModel):
     contact_number:int
     is_active: bool
 
-class userInDB(UserClass):
+class UserInDB(UserClass):
     hashed_password: str
 
 class Access_token(BaseModel):
     access_token: str
     token_type: str
 
-class Token_Data(BaseModel):
+class TokenData(BaseModel):
     username : str or None = None # type: ignore
