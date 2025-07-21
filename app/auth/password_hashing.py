@@ -1,5 +1,6 @@
 from passlib.context import CryptContext
 from schemas.user_schemas import UserInDB
+from models.user_models import Users
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated = "auto")
 
@@ -10,11 +11,12 @@ def get_password_hash(password):
     return pwd_context.hash(password)
 
 def get_user(db, username: str):
-    if  username in db:
-        user_data = db[username]
-        return UserInDB(**user_data)
+    user = db.query(Users).filter(Users.username == username).first()
+
+    if user:
+        return UserInDB.model_validate(user)
     else: 
-        return
+        return None
 
 def authenticate_user(db, username:str, password: str):
     user = get_user(db, username= username)
@@ -23,5 +25,7 @@ def authenticate_user(db, username:str, password: str):
     if not verify_password(password, user.hashed_password):
         return False
     return user
+
+print("Hashed",get_password_hash("123456"))
 
 
