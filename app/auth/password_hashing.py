@@ -1,6 +1,7 @@
 from passlib.context import CryptContext
 from schemas.user_schemas import UserInDB
 from models.user_models import Users
+from fastapi import HTTPException
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated = "auto")
 
@@ -28,4 +29,15 @@ def authenticate_user(db, username:str, password: str):
 
 print("Hashed",get_password_hash("123456"))
 
+def add_new_user(db, formdata):
+
+    username = formdata.username
+    if db.query(Users).filter(Users.username == username):
+        raise HTTPException(status_code=400, detail= {"Username already taken"})
+    new_user = Users(username = formdata.username,
+                         email = formdata.email,
+                         hashed_password= get_password_hash(formdata.password))
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
 
