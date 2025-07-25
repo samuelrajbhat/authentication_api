@@ -4,15 +4,20 @@ from fastapi import Form
 
 
 class UserForm(BaseModel):
-    def __init__(
-            self,
+    username: str
+    full_name: str
+    email: str
+    password: str
+
+    @classmethod
+    def as_form(
+            cls,
             username: Annotated[str, Form()], # type: ignore
             full_name: Annotated[str, Form()], # type: ignore
             email: Annotated[str, Form()], # type: ignore
             password: Annotated[str, Form()], # type: ignore
-    ):
-        self.username = username
-        self.full_name = full_name
-        self.email = email
-        self.password = password
-        
+    ) -> "UserForm": # type: ignore
+        return cls(username = username,
+            full_name = full_name,
+            email = email,
+            password = password) 

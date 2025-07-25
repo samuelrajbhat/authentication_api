@@ -5,7 +5,7 @@ from datetime import timedelta
 from models.token_model import Token
 from auth.auth_model import UserForm
 from auth.password_hashing import authenticate_user, add_new_user
-from auth.jwt_decode import create_access_token
+from auth.utils.jwt_decode import create_access_token
 # from schemas.user_schemas import UserClass
 from db.database import get_db
 from sqlalchemy.orm import Session
@@ -30,6 +30,9 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(),
 
 
 @router.post("/signup")
-async def signup(formdata: Annotated[UserForm, Form()], db: Session = Depends(get_db)):
+async def signup(formdata: Annotated[UserForm, Depends(UserForm.as_form)], db: Session = Depends(get_db)):
+# async def signup(formdata: UserForm, db: Session = Depends(get_db)):
+
+    print("jnskfsdf>>>>>>>>>>>>>>>>>>>>",formdata)
     add_new_user(db,formdata)
-    return formdata.username
+    
