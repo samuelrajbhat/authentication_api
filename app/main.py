@@ -12,6 +12,7 @@ from models.user_models import Base
 
 
 from routes.auth_routes import router as auth_router 
+from routes.protected_routes.protected_routes import router as protected_router
 
 app = FastAPI()
 
@@ -20,6 +21,7 @@ print("conneccting to dattabase", settings.DATABASE_URL)
 
 
 app.include_router(auth_router)
+app.include_router(protected_router)
 
 
 # @app.post("/token", response_model=Token)
