@@ -1,8 +1,8 @@
 from passlib.context import CryptContext
 from schemas.user_schemas import UserInDB
 from models.user_models import Users
-from fastapi import HTTPException
-
+from fastapi import HTTPException, status
+from fastapi.responses import JSONResponse
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated = "auto")
 
 def verify_password(plain_password,hashed_password):
@@ -32,12 +32,20 @@ print("Hashed",get_password_hash("123456"))
 def add_new_user(db, formdata):
 
     username = formdata.username
-    if db.query(Users).filter(Users.username == username):
-        raise HTTPException(status_code=400, detail= {"Username already taken"})
+    if db.query(Users).filter(Users.username == username).first():
+        raise HTTPException(status_code=400, detail= "Username already taken")
     new_user = Users(username = formdata.username,
                          email = formdata.email,
+                         full_name = formdata.full_name,
                          hashed_password= get_password_hash(formdata.password))
-    db.add(new_user)
-    db.commit()
-    db.refresh(new_user)
-
+    try:
+        db.add(new_user)
+        db.commit()
+        db.refresh(new_user)
+        return JSONResponse(status_code=status.HTTP_201_CREATED,
+                            content={"message":f"{formdata.username} added succesfull"}
+        )
+    except Exception as e:
+        return JSONResponse( status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                            content={"error": str(e)}
+        )
