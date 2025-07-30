@@ -6,6 +6,11 @@ class UserClass(BaseModel):
     full_name: str
     email: str
     is_disabled: bool
+    model_config = {
+        "from_attributes": True 
+        # To allow instantiating this pydantic model from SQLAlchemy objects (or any other  attributes) using model_validate()
+
+    }
 
 class UserInDB(UserClass):
     hashed_password: str

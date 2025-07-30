@@ -1,8 +1,10 @@
 from passlib.context import CryptContext
-from schemas.user_schemas import UserInDB
+from schemas.user_schemas import UserInDB, UserClass
 from models.user_models import Users
 from fastapi import HTTPException, status
 from fastapi.responses import JSONResponse
+
+
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated = "auto")
 
 def verify_password(plain_password,hashed_password):
@@ -11,16 +13,19 @@ def verify_password(plain_password,hashed_password):
 def get_password_hash(password):
     return pwd_context.hash(password)
 
-def get_user(db, username: str):
-    user = db.query(Users).filter(Users.username == username).first()
+def get_user(db, username: str): # type: ignore
 
+    user = db.query(Users).filter(Users.username == username).first()
+    print (user)
+    
     if user:
-        return UserInDB.model_validate(user)
+        return user
     else: 
         return None
 
 def authenticate_user(db, username:str, password: str):
     user = get_user(db, username= username)
+    user = UserInDB.model_validate(user)
     if not  user :
         return False
     if not verify_password(password, user.hashed_password):

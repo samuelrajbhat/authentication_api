@@ -12,7 +12,7 @@ from models.user_models import Base
 
 
 from routes.auth_routes import router as auth_router 
-from routes.protected_routes.protected_routes import router as protected_router
+from routes.protected_routes.protected_routes import protected_router
 
 app = FastAPI()
 
