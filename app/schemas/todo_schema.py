@@ -1,26 +1,28 @@
 from pydantic import BaseModel
-from typing import Annotated, Optional
-from fastapi import Form
-from sqlalchemy import Enum
+from typing import Optional
+
+from datetime import datetime
 from models.todo_models import TodoStatus
 
 
 class TodoForm(BaseModel):
-    id: int
+    
     title: str
     description: Optional[str]
     status: Optional[TodoStatus]= TodoStatus.pending
 
+class TodoOut(BaseModel):
+    id: int
+    title: str
+    description: Optional[str]
+    status: TodoStatus
+    created_at: datetime
+    updated_at: datetime
 
-    # @classmethod
-    # def as_form(
-    #         cls,
-    #         username: Annotated[str, Form()], # type: ignore
-    #         full_name: Annotated[str, Form()], # type: ignore
-    #         email: Annotated[str, Form()], # type: ignore
-    #         password: Annotated[str, Form()], # type: ignore
-    # ) -> "UserForm": # type: ignore
-    #     return cls(username = username,
-    #         full_name = full_name,
-    #         email = email,
-    #         password = password) 
+    class config:
+        orm_mode = True
+        use_enum_values = True
+
+
+class UpdateTodoStatus(BaseModel):
+    status: Optional[TodoStatus]= TodoStatus.pending
