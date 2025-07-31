@@ -11,8 +11,8 @@ from models.user_models import Base
 
 
 
-from routes.auth_routes import router as auth_router 
-from routes.protected_routes.protected_routes import protected_router
+from api.auth_api import router as auth_router 
+from api.protected_api.protected_api import protected_router
 
 app = FastAPI()
 
