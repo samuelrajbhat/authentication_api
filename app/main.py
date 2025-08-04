@@ -13,6 +13,7 @@ from models.user_models import Base
 
 from api.auth_api import router as auth_router 
 from api.protected_api.protected_api import protected_router
+from langgraph_app.langgraph_controller import langgraph_router
 
 app = FastAPI()
 
@@ -22,7 +23,7 @@ print("conneccting to dattabase", settings.DATABASE_URL)
 
 app.include_router(auth_router)
 app.include_router(protected_router)
-
+app.include_router(langgraph_router)
 
 # @app.post("/token", response_model=Token)
 # async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
