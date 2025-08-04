@@ -13,6 +13,7 @@ def clean_token(token: str) -> str:
         return token.split("bearer ")[1]
     return token
 
+
 def get_todos(unclean_token: str):
     print(f"unclean tokken>>>> {unclean_token}")
     print(f"API URL {API_BASE}")
