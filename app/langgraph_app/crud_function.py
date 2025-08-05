@@ -31,6 +31,13 @@ def add_todo(unclean_token:str, title: str, description: str, status: str):
     response = httpx.post(f"{API_BASE}/todos", json=data, headers=headers)
     return response.json()
 
-# def update_todo_status(token: str, new_status: str):
-    
-#     headers = {"Authorization": f"{token}"}
+def update_todo_status(token: str, new_status: str, todo_id: int):
+    headers = {"Authorization": f"{token}"}
+    data  = {"status": new_status}
+    response = httpx.patch(f"{API_BASE}/todos?todo_id={todo_id}",json=data, headers=headers)
+    return response.json()
+
+def delete_todo_item(token: str, todo_id: int):
+    headers = {"Authorization": f"{token}"}
+    response = httpx.delete(f"{API_BASE}/delete?todo_id={todo_id}", headers=headers)
+    return response.json()
