@@ -14,8 +14,12 @@ from models.user_models import Base
 from api.auth_api import router as auth_router 
 from api.protected_api.protected_api import protected_router
 from langgraph_app.langgraph_controller import langgraph_router
+from fastapi_mcp import FastApiMCP
+
 
 app = FastAPI()
+
+
 
 Base.metadata.create_all(bind = engine)
 print("conneccting to dattabase", settings.DATABASE_URL)
@@ -24,7 +28,8 @@ print("conneccting to dattabase", settings.DATABASE_URL)
 app.include_router(auth_router)
 app.include_router(protected_router)
 app.include_router(langgraph_router)
-
+mcp = FastApiMCP(app)
+mcp.mount()
 # @app.post("/token", response_model=Token)
 # async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
 #     user = authenticate_user(db, form_data.username, form_data.password) #type: ignore
