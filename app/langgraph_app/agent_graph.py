@@ -43,5 +43,6 @@ def run_graph(user_input: str, token: str):
             HumanMessage(content=user_input)],
         "token": token
     })
-    return result
+    last_ai_message = result["messages"][-1].content
+    return last_ai_message
 
