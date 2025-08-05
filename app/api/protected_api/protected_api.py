@@ -29,8 +29,9 @@ def update(todo_id: int,
     todo_updated = upadte_todo_status(todo_id, update_status, db, current_user)
     return todo_updated
 
-@protected_router.get("/todos", response_model= List[TodoOut])
+@protected_router.get("/todos", response_model= List[TodoOut], operation_id="get_todo_list")
 def get(db: Session = Depends(get_db), current_user: Users = Depends(get_current_active_user)):
+    
     todo_list= list_all_todo(db, current_user)
     return todo_list
 
