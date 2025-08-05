@@ -17,4 +17,4 @@ def ask_agent(request_data: LLMRequest,
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Authorization token required")
 
     response = run_graph(request_data.messages, token)
-    return {"REsponse": response}
+    return {"Response": response}
