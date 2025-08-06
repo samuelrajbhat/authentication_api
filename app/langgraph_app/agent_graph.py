@@ -5,16 +5,16 @@ from langgraph.prebuilt import ToolNode, create_react_agent
 from .tool_wrapper import tools
 from langchain_core.messages import HumanMessage, SystemMessage
 from langgraph.runtime import Runtime
-
+from .agent_models import Context, State
 llm = ChatOpenAI(model="gpt-4")
  
 
-class State(TypedDict):
-    messages: Annotated[list, add_messages]
-    token: str
+# class State(TypedDict):
+#     messages: Annotated[list, add_messages]
+#     token: str
 
-class Context(TypedDict):
-    token: str
+# class Context(TypedDict):
+#     token: str
 
 # agent_model = create_react_agent( model="openai:gpt-4", tools=[tools],context_schema=Context)
 

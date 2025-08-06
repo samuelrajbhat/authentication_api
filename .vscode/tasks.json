@@ -1,0 +1,14 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"label": "Login and fetch all todos via FastAPI",
+			"command": "curl -X POST \"http://127.0.0.1:8000/token\" -H \"Content-Type: application/x-www-form-urlencoded\" -d \"username=samuel&password=samuel\" -c cookies.txt > token_response.json && set TOKEN=$(jq -r .access_token token_response.json) && curl -X GET \"http://127.0.0.1:8000/todos\" -H \"Authorization: Bearer $TOKEN\"",
+			"args": [],
+			"problemMatcher": [],
+			"group": "test",
+			"isBackground": false
+		}
+	]
+}
