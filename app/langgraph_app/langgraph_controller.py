@@ -1,11 +1,11 @@
 from fastapi import APIRouter,status, Depends, HTTPException, Request
 from pydantic import BaseModel
 from .agent_graph import run_graph
+from .agent_models import LLMRequest
+
 
 langgraph_router = APIRouter(prefix="/ai")
 
-class LLMRequest(BaseModel):
-    messages: str
 
 @langgraph_router.post("/ask")
 def ask_agent(request_data: LLMRequest,
