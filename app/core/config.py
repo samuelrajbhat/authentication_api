@@ -18,3 +18,9 @@ class Settings:
     ALGORITHM : str | None = os.getenv("ALGORITHM")
 
 settings = Settings()
+
+class LangGraphSettings:
+    LANGGRAPH_DB: str = os.getenv("LANGGRAPH_DB", "langgraph_checkpointer")
+    LANGGRAPH_DB_URL: str = f"postgresql://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_SERVER}:{settings.POSTGRES_PORT}/{LANGGRAPH_DB}"
+    
+langgraph_settings= LangGraphSettings()
