@@ -1,17 +1,23 @@
 from langgraph.graph import StateGraph, END, add_messages
 from langchain_openai import ChatOpenAI
-from typing import TypedDict, Annotated, Literal
-from langgraph.prebuilt import ToolNode, create_react_agent
+from typing import Literal
+from langgraph.prebuilt import ToolNode
 from .tool_wrapper import tools
 from langchain_core.messages import HumanMessage, SystemMessage
-from langgraph.runtime import Runtime
+
 from .agent_models import Context, State
 from langgraph.checkpoint.memory import InMemorySaver
+from .psql_memory_saver import checkpointer
+
+# from core.config import langgraph_settings
+# from langgraph.checkpoint.postgres import PostgresSaver
+
+# LANGGRAPH_DB_URL = langgraph_settings.LANGGRAPH_DB_URL
 
 
 llm = ChatOpenAI(model="gpt-4")
 
-checkpointer = InMemorySaver()
+# checkpointer = InMemorySaver()
  
 
 
@@ -39,6 +45,7 @@ graph_builder.add_node("should_continue", should_continue)
 graph_builder.set_entry_point("agent")
 graph_builder.add_conditional_edges("agent", should_continue)
 graph_builder.add_edge("tools", "agent")
+
 
 graph = graph_builder.compile(checkpointer=checkpointer)
 
