@@ -8,7 +8,6 @@ from core.config import langgraph_settings
 
 SQLALCHEMY_DATABASE_URL = settings.DATABASE_URL
 LANGGRAPH_DB_URL = langgraph_settings.LANGGRAPH_DB_URL
-print("Database URL>", SQLALCHEMY_DATABASE_URL)
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL, pool_pre_ping=True)
 langgraph_engine = create_engine(LANGGRAPH_DB_URL)
