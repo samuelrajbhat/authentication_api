@@ -7,7 +7,8 @@ from langchain_core.messages import HumanMessage, SystemMessage
 
 from .agent_models import Context, State
 from langgraph.checkpoint.memory import InMemorySaver
-from .psql_memory_saver import checkpointer
+from .psql_memory_saver import checkpointer, create_configurable_thread_id
+from langchain_core.runnables import RunnableConfig
 
 # from core.config import langgraph_settings
 # from langgraph.checkpoint.postgres import PostgresSaver
@@ -15,8 +16,8 @@ from .psql_memory_saver import checkpointer
 # LANGGRAPH_DB_URL = langgraph_settings.LANGGRAPH_DB_URL
 
 
-llm = ChatOpenAI(model="gpt-4")
-
+llm = ChatOpenAI(model="gpt-4.1-mini")
+  
 # checkpointer = InMemorySaver()
  
 
@@ -50,12 +51,16 @@ graph_builder.add_edge("tools", "agent")
 graph = graph_builder.compile(checkpointer=checkpointer)
 
 def run_graph(user_input: str, token: str):
+    thread_id = create_configurable_thread_id(user_input)
+    print(f"Thread ID: {thread_id}")
+    config = RunnableConfig(
+        configurable={"thread_id": thread_id, "limit": 10}  # type: ignore
+        )
     result = graph.invoke({
         "messages": [
             HumanMessage(content=user_input)],
         "token": token},
-        {"configurable": {"thread_id": "1"}}, # type: ignore
+        config=config,
         context={"token": token})
     last_ai_message = result["messages"][-1].content
     return last_ai_message
-
