@@ -56,11 +56,22 @@ def run_graph(user_input: str, token: str):
     config = RunnableConfig(
         configurable={"thread_id": thread_id, "limit": 10}  # type: ignore
         )
-    result = graph.invoke({
+    # result = graph.invoke({
+    #     "messages": [
+    #         HumanMessage(content=user_input)],
+    #     "token": token},
+    #     config=config,
+    #     context={"token": token})
+    
+    for message_chunk, metadata in graph.stream({
         "messages": [
             HumanMessage(content=user_input)],
         "token": token},
         config=config,
-        context={"token": token})
-    last_ai_message = result["messages"][-1].content
-    return last_ai_message
+        context={"token": token},
+        stream_mode="messages"):
+        if message_chunk.content: # type: ignore
+            return(message_chunk.content) # type: ignore
+
+    # last_ai_message = result["messages"][-1].content
+    # return last_ai_message
