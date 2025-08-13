@@ -71,7 +71,7 @@ def run_graph(user_input: str, token: str):
         context={"token": token},
         stream_mode="messages"):
         if message_chunk.content: # type: ignore
-            return(message_chunk.content) # type: ignore
+            yield(message_chunk.content) # type: ignore
 
     # last_ai_message = result["messages"][-1].content
     # return last_ai_message
