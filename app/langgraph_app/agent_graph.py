@@ -23,7 +23,9 @@ llm = ChatOpenAI(model="gpt-4.1-mini")
 
 
 def agent(state: State):
-    """Agent that processes messages and invokes tools if needed."""
+    """Agent that processes messages and invokes tools if needed.
+        Return data in JSON format
+    """
     messages = state["messages"]
     llm_with_tools = llm.bind_tools(tools)
     response = llm_with_tools.invoke(messages)
@@ -71,6 +73,7 @@ def run_graph(user_input: str, token: str):
         context={"token": token},
         stream_mode="messages"):
         if message_chunk.content: # type: ignore
+            print(f"Message chunk: {message_chunk.content}") # type: ignore
             yield(message_chunk.content) # type: ignore
 
     # last_ai_message = result["messages"][-1].content

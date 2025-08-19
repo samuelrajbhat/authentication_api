@@ -3,7 +3,7 @@ from typing import Annotated
 from fastapi import Form
 
 
-class UserForm(BaseModel):
+class   UserForm(BaseModel):
     username: str
     full_name: str
     email: str
@@ -20,4 +20,5 @@ class UserForm(BaseModel):
         return cls(username = username,
             full_name = full_name,
             email = email,
-            password = password) 
+            password = password)
+    
